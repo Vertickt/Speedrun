@@ -60,6 +60,7 @@ object Round {
         sendGameTitle(game)
         task(delay = 5) {
             game.onEnable()
+            teleportPlayers(game)
         }
     }
 
