@@ -81,6 +81,14 @@ object Round {
         }
     }
 
+    private fun loadGameWorlds() {
+        activeModes.forEach { game ->
+            val creator = WorldCreator(game.name)
+            creator.generator(VoidWorldGenerator())
+            creator.createWorld()
+        }
+    }
+
     init {
         schedule()
     }
