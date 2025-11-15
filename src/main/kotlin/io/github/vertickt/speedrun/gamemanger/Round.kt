@@ -90,6 +90,7 @@ object Round {
     }
 
     init {
+        loadGameWorlds()
         schedule()
     }
 }
