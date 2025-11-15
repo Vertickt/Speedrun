@@ -1,0 +1,8 @@
+name: Speedrun
+version: '1.0.0'
+main: io.github.vertickt.speedrun.Speedrun
+api-version: '1.21'
+authors: [ vertickt ]
+
+libraries:
+  - "net.axay:kspigot:1.21.0"
