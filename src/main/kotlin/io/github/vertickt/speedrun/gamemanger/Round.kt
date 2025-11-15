@@ -63,6 +63,13 @@ object Round {
         }
     }
 
+    private fun teleportPlayers(game: GameManager) {
+        val location = Location(server.getWorld(game.name), 0.0, 100.0, 0.0, 0f, 0f)
+        onlinePlayers.forEach { player ->
+            player.teleportAsync(location)
+        }
+    }
+
     private fun sendGameTitle(game: GameManager) {
         val titleTimes = Title.Times.times(
             0.seconds.toJavaDuration(),
