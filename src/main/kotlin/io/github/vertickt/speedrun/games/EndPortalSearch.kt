@@ -31,7 +31,7 @@ object EndPortalSearch : GameManager() {
 
 
     private fun teleportStronghold() {
-        task(delay = 3) {
+        task(delay = 20) {
             val world = server.getWorld(name) ?: return@task
             val stronghold = world.locateNearestStructure(
                 world.spawnLocation,
