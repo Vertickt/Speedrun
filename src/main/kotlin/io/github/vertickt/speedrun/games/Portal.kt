@@ -3,8 +3,8 @@ package io.github.vertickt.speedrun.games
 import io.github.vertickt.speedrun.gamemanger.GameManager
 import io.github.vertickt.speedrun.gamemanger.Round
 
-object BowCrystal : GameManager() {
-    override val name = "BowCrystal"
+object Portal : GameManager() {
+    override val name = "Portal"
 
     override fun onEnable() {
         Round.defaultTeleportPlayers(this)
@@ -12,5 +12,4 @@ object BowCrystal : GameManager() {
 
     override fun onDisable() {
     }
-
 }

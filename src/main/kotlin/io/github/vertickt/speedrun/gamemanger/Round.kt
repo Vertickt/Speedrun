@@ -3,13 +3,18 @@ package io.github.vertickt.speedrun.gamemanger
 import io.github.vertickt.speedrun.games.BowCrystal
 import io.github.vertickt.speedrun.games.CraftingRace
 import io.github.vertickt.speedrun.games.EndPortalSearch
+import io.github.vertickt.speedrun.games.Portal
+import io.github.vertickt.speedrun.util.generator.EndPortalSearchGenerator
+import io.github.vertickt.speedrun.util.generator.VoidWorldGenerator
 import io.github.vertickt.speedrun.util.mm
 import net.axay.kspigot.extensions.onlinePlayers
 import net.axay.kspigot.extensions.server
 import net.axay.kspigot.runnables.task
 import net.kyori.adventure.title.Title
 import net.kyori.adventure.title.TitlePart
+import org.bukkit.Location
 import org.bukkit.Sound
+import org.bukkit.WorldCreator
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
@@ -18,7 +23,8 @@ object Round {
     private var countdown = Duration.ZERO
     var forceStart = false
     var inGame = false
-    val activeModes = listOf(EndPortalSearch, BowCrystal, CraftingRace)
+    //val activeModes = listOf(EndPortalSearch, BowCrystal, CraftingRace, Portal)
+    val activeModes = listOf(EndPortalSearch)
 
     private val maxPlayers get() = server.maxPlayers
     private val currentPlayers get() = onlinePlayers.size
@@ -60,12 +66,11 @@ object Round {
         sendGameTitle(game)
         task(delay = 5) {
             game.onEnable()
-            teleportPlayers(game)
         }
     }
 
-    private fun teleportPlayers(game: GameManager) {
-        val location = Location(server.getWorld(game.name), 0.0, 100.0, 0.0, 0f, 0f)
+    fun defaultTeleportPlayers(game: GameManager) {
+        val location = Location(server.getWorld(game.name), 0.5, 100.0, 0.5, 0f, 0f)
         onlinePlayers.forEach { player ->
             player.teleportAsync(location)
         }
@@ -92,7 +97,10 @@ object Round {
     private fun loadGameWorlds() {
         activeModes.forEach { game ->
             val creator = WorldCreator(game.name)
-            creator.generator(VoidWorldGenerator())
+            when(game) {
+                EndPortalSearch -> creator.generator(EndPortalSearchGenerator())
+                else -> creator.generator(VoidWorldGenerator())
+            }
             creator.createWorld()
         }
     }

@@ -3,6 +3,7 @@ package io.github.vertickt.speedrun
 import io.github.vertickt.speedrun.command.StartCommand
 import io.github.vertickt.speedrun.gamemanger.Round
 import io.github.vertickt.speedrun.listener.ConnectionListener
+import io.github.vertickt.speedrun.listener.ProtectionListener
 import net.axay.kspigot.main.KSpigot
 
 class Speedrun : KSpigot() {
@@ -10,6 +11,7 @@ class Speedrun : KSpigot() {
     override fun startup() {
         //listener
         ConnectionListener
+        ProtectionListener
 
         //gamemanager
         Round
@@ -19,6 +21,5 @@ class Speedrun : KSpigot() {
     }
 
     override fun shutdown() {
-        // Plugin shutdown logic
     }
 }
