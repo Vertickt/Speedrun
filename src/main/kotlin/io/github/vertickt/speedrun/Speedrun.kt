@@ -1,7 +1,7 @@
 package io.github.vertickt.speedrun
 
 import io.github.vertickt.speedrun.command.StartCommand
-import io.github.vertickt.speedrun.gamemanger.Round
+import io.github.vertickt.speedrun.gamemanger.round.Round
 import io.github.vertickt.speedrun.listener.ConnectionListener
 import io.github.vertickt.speedrun.listener.ProtectionListener
 import net.axay.kspigot.main.KSpigot

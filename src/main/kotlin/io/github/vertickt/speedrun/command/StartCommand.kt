@@ -1,6 +1,6 @@
 package io.github.vertickt.speedrun.command
 
-import io.github.vertickt.speedrun.gamemanger.Round
+import io.github.vertickt.speedrun.gamemanger.round.Round
 import net.axay.kspigot.commands.command
 import net.axay.kspigot.commands.requiresPermission
 import net.axay.kspigot.commands.runs

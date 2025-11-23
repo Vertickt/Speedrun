@@ -1,13 +1,19 @@
 package io.github.vertickt.speedrun.games
 
 import io.github.vertickt.speedrun.gamemanger.GameManager
-import io.github.vertickt.speedrun.gamemanger.Round
+import io.github.vertickt.speedrun.gamemanger.round.InGame
+import io.github.vertickt.speedrun.gamemanger.round.Round
+import net.axay.kspigot.event.listen
+import net.axay.kspigot.event.register
+import net.axay.kspigot.event.unregister
 import net.axay.kspigot.extensions.broadcast
 import net.axay.kspigot.extensions.onlinePlayers
 import net.axay.kspigot.extensions.server
 import net.axay.kspigot.items.itemStack
 import net.axay.kspigot.runnables.task
+import org.bukkit.GameMode
 import org.bukkit.Material
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.generator.structure.StructureType
 
 object EndPortalSearch : GameManager() {
@@ -22,16 +28,26 @@ object EndPortalSearch : GameManager() {
             player.inventory.addItem(itemStack(Material.ENDER_PEARL) { amount = 12 })
             player.inventory.addItem(itemStack(Material.BLAZE_ROD) { amount = 6 })
         }
-
+        endPortal.register()
     }
 
     override fun onDisable() {
+        endPortal.unregister()
     }
 
 
+    private val endPortal = listen<PlayerMoveEvent>(register = false) {
+        if (it.to.clone().add(0.0, 1.5, 0.0).block.type != Material.END_PORTAL) return@listen
+        if(it.player.gameMode != GameMode.SURVIVAL) return@listen
+        Round.win(it.player)
+        task(delay = 120) {
+            InGame.handleGameEnd()
+        }
+    }
+
 
     private fun teleportStronghold() {
-        task(delay = 20) {
+        task(delay = 40) {
             val world = server.getWorld(name) ?: return@task
             val stronghold = world.locateNearestStructure(
                 world.spawnLocation,
