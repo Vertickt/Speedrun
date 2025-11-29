@@ -18,9 +18,15 @@ import kotlin.time.Duration.Companion.seconds
 
 object InGame {
     lateinit var game: GameManager
+    private var nextGameIndex = 0
+    var forceGame = false
 
     fun handleGame() {
-        game = activeModes.random()
+        if (!forceGame) {
+            game = activeModes[nextGameIndex]
+            nextGameIndex++
+            if (nextGameIndex == activeModes.size) nextGameIndex = 0
+        }
         inGame = true
         timeLeft = 3.minutes
 
@@ -42,6 +48,7 @@ object InGame {
 
     fun handleGameEnd() {
         Round.forceStart = false
+        forceGame = false
         game.onDisable()
         Round.countdown = 10.seconds
         onlinePlayers.forEach { player ->

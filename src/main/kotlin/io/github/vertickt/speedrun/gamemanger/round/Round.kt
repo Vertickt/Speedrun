@@ -24,9 +24,8 @@ object Round {
     var forceStart = false
     var inGame = false
 
-    //val activeModes = listOf(EndPortalSearch, BowCrystal, CraftingRace, Portal)
-    val activeModes = listOf(BowCrystal, EndPortalSearch, Portal)
-    //val activeModes = listOf(Portal)
+    //val activeModes = listOf(BowCrystal, EndPortalSearch, Portal)
+    val activeModes = arrayOf(BowCrystal, EndPortalSearch, Portal)
 
     val maxPlayers get() = server.maxPlayers
     val currentPlayers get() = onlinePlayers.size
