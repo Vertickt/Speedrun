@@ -2,9 +2,9 @@ package io.github.vertickt.speedrun.listener
 
 import net.axay.kspigot.event.listen
 import net.axay.kspigot.extensions.worlds
-import net.minecraft.world.entity.EntitySpawnReason
+import net.axay.kspigot.runnables.task
 import org.bukkit.GameMode
-import org.bukkit.entity.ExperienceOrb
+import org.bukkit.entity.EntityType
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.CreatureSpawnEvent
@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
 import org.bukkit.event.player.PlayerDropItemEvent
+import javax.swing.text.html.parser.Entity
 
 object ProtectionListener {
     val blockBreak = listen<BlockBreakEvent> {
@@ -34,6 +35,7 @@ object ProtectionListener {
     }
 
     val damageEvent = listen<EntityDamageEvent> {
+        if (it.entity.type == EntityType.END_CRYSTAL || it.entity.type == EntityType.ENDER_DRAGON) return@listen
         it.isCancelled = true
     }
 
@@ -43,6 +45,7 @@ object ProtectionListener {
 
     val spawnEntity = listen<EntitySpawnEvent> {
         if (it.entity.entitySpawnReason == CreatureSpawnEvent.SpawnReason.CUSTOM) return@listen
+        if (it.entity.type == EntityType.END_CRYSTAL || it.entity.type == EntityType.ARROW || it.entity.type == EntityType.ENDER_DRAGON) return@listen
         it.isCancelled = true
     }
 }

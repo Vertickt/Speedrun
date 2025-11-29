@@ -6,10 +6,13 @@ import io.github.vertickt.speedrun.games.EndPortalSearch
 import io.github.vertickt.speedrun.games.Portal
 import io.github.vertickt.speedrun.util.generator.EndPortalSearchGenerator
 import io.github.vertickt.speedrun.util.generator.VoidWorldGenerator
-import net.axay.kspigot.extensions.broadcast
+import io.papermc.paper.registry.entry.RegistryEntryMeta
 import net.axay.kspigot.extensions.server
+import org.bukkit.World
 import org.bukkit.WorldCreator
+import org.bukkit.craftbukkit.CraftWorld
 import org.codehaus.plexus.util.FileUtils
+import java.io.File
 
 object WorldManager {
     fun loadGameWorlds() {
@@ -17,8 +20,8 @@ object WorldManager {
             val creator = WorldCreator(game.name)
             when (game) {
                 EndPortalSearch -> return
-                Portal -> return
                 BowCrystal -> return
+                Portal -> return
                 else -> creator.createWorld()
             }
         }
@@ -29,9 +32,12 @@ object WorldManager {
         val creator = WorldCreator(game.name)
         when (game) {
             EndPortalSearch -> creator.generator(EndPortalSearchGenerator())
+            BowCrystal -> creator.environment(World.Environment.THE_END)
+            Portal -> FileUtils.copyDirectoryStructure(File("template_portal"), File("Portal"))
             else -> creator.generator(VoidWorldGenerator())
         }
-        creator.createWorld()
+        val world = creator.createWorld()
+        if (game == BowCrystal) { (world as CraftWorld).handle.dragonFight = null }
     }
 
     fun deleteGameWorld(game: GameManager) {

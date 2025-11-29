@@ -2,23 +2,21 @@ package io.github.vertickt.speedrun.gamemanger.round
 
 import io.github.vertickt.speedrun.gamemanger.GameManager
 import io.github.vertickt.speedrun.gamemanger.WorldManager
+import io.github.vertickt.speedrun.games.BowCrystal
 import io.github.vertickt.speedrun.games.EndPortalSearch
+import io.github.vertickt.speedrun.games.Portal
 import io.github.vertickt.speedrun.util.mm
 import io.github.vertickt.speedrun.util.spawnRandomFireworkAbove
 import io.github.vertickt.speedrun.util.titleTimes
-import net.axay.kspigot.extensions.bukkit.title
 import net.axay.kspigot.extensions.onlinePlayers
 import net.axay.kspigot.extensions.server
 import net.axay.kspigot.runnables.task
-import net.kyori.adventure.title.Title
 import net.kyori.adventure.title.TitlePart
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.toJavaDuration
 
 object Round {
     var countdown = Duration.ZERO
@@ -27,7 +25,8 @@ object Round {
     var inGame = false
 
     //val activeModes = listOf(EndPortalSearch, BowCrystal, CraftingRace, Portal)
-    val activeModes = listOf(EndPortalSearch)
+    val activeModes = listOf(BowCrystal, EndPortalSearch, Portal)
+    //val activeModes = listOf(Portal)
 
     val maxPlayers get() = server.maxPlayers
     val currentPlayers get() = onlinePlayers.size
@@ -66,6 +65,9 @@ object Round {
                 spawnRandomFireworkAbove(p.location)
                 p.gameMode = GameMode.SPECTATOR
             }
+        }
+        task(delay = 120) {
+            InGame.handleGameEnd()
         }
     }
 

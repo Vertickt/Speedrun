@@ -24,9 +24,11 @@ object EndPortalSearch : GameManager() {
         teleportStronghold()
 
         onlinePlayers.forEach { player ->
-            player.inventory.addItem(itemStack(Material.IRON_PICKAXE) {})
-            player.inventory.addItem(itemStack(Material.ENDER_PEARL) { amount = 12 })
-            player.inventory.addItem(itemStack(Material.BLAZE_ROD) { amount = 6 })
+            player.apply {
+                inventory.addItem(itemStack(Material.IRON_PICKAXE) {})
+                inventory.addItem(itemStack(Material.ENDER_PEARL) { amount = 12 })
+                inventory.addItem(itemStack(Material.BLAZE_ROD) { amount = 6 })
+            }
         }
         endPortal.register()
     }
@@ -40,9 +42,6 @@ object EndPortalSearch : GameManager() {
         if (it.to.clone().add(0.0, 1.5, 0.0).block.type != Material.END_PORTAL) return@listen
         if(it.player.gameMode != GameMode.SURVIVAL) return@listen
         Round.win(it.player)
-        task(delay = 120) {
-            InGame.handleGameEnd()
-        }
     }
 
 
